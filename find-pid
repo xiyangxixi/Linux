@@ -1,0 +1,3 @@
+# 查看某个端口的pid
+# 安装 yum -y install lsof
+lsof -n -P -t -i :8181
