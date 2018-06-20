@@ -1,0 +1,35 @@
+#! /bin/bash
+
+#! 设置ssh免密
+# 第一种
+ssh-keygen -t rsa 
+ssh-copy-id -i /root/.ssh/id_rsa.pub 192.168.29.250
+
+# 第二种
+把你的本地主机用户的ssh公匙文件复制到远程主机用户的~/.ssh/authorized_keys文件中，假设本地主机linux(10.1.1.1),远程主机linux(10.1.1.2)
+一，在linux10.1.1.1主机里的root用户
+运行
+#ssh-keygen -t rsa
+结果如下
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/.username/ssh/id_rsa):#回车
+Enter passphrase (empty for no passphrase):#回车
+Enter same passphrase again:#回车
+Your identification has been saved in /home/.username /.ssh/id_rsa.
+Your public key has been saved in /home/.username /.ssh/id_rsa.pub.
+The key fingerprint is:
+38:25:c1:4d:5d:d3:89:bb:46:67:bf:52:af:c3:17:0c username@localhost
+Generating RSA keys:
+Key generation complete.
+会在用户目录~/.ssh/产生两个文件，id_rsa，id_rsa.pub
+二，把linux(10.1.1.1)主机上的id_rsa.pub文件拷贝到linux(10.1.1.2)主机的root用户主目录下的.ssh目录下,并且改名为authorized_keys
+即：
+/root/.ssh/authorized_keys
+这样在linux100主机上使用scp命令复制文件到linux(10.1.1.2)上将不提示输入密码了，直接复制了。反之亦然！
+
+  ssh-keygen -t dsa -P '' -f ~/.ssh/id_dsa                生成公钥id_dsa.pub和私钥id_dsa
+  cat ~/.ssh/id_dsa.pub >> ~/.ssh/authorized_keys
+  ssh-keygen -t dsa -P '' -f ~/.ssh/id_dsa                生成公钥id_dsa.pub和私钥id_dsa
+  cat ~/.ssh/id_dsa.pub >> ~/.ssh/authorized_keys
+scp -p 2027 /root/.ssh/id_dsa.pub root@192.168.1.131:/tmp 
+cat ~/tmp/id_dsa.pub >> ~/.ssh/authorized_keys
