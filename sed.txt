@@ -1,0 +1,21 @@
+1、删除匹配的字符 -n 取消默认显示
+删除第一行：sed '1d' test.sh
+删除最后一行：sed '$d' test.sh
+删除匹配字符的那一行：sed '/huazai/d' test.sh
+删除某字符开头的行：sed '/^good/d' test.sh
+删除某字符结尾的行：sed '/bye$/d' test.sh
+
+2、查找、替换
+在所有行首添加字符：sed 's/^/huazai/g' test.sh
+在所有行尾添加字符：sed 's/$/huazai/g' test.sh
+在匹配关键字后面添加字符：sed '/good/s//& test/g' test.sh sed 's/good/&luckey/' test.sh
+在匹配关键字前面添加字符：sed  's/this/huazai&/g' test.sh
+在匹配字符的行的最后添加字符：sed 's/good.*$/&test/' test.sh sed '/bye/ s/$/aaa/' test.sh
+在匹配字符的行的开头添加字符：sed '/good/ s/^/aaa/' test.sh
+匹配行下面添加一行：sed '/bye/a\aaa' test.sh
+查看2到3行：sed -n '2,3p' test.sh
+查看第3行：sed -n '3p' test.sh
+删除包含“Hua"到"You”之间的行:sed '/My/,/You/d' test.sh
+删除包含"My"的行到第10行：sed '/My/,10d' my.cnf
+查看匹配字符的下一行：sed -n '/test/{n;p}' test.sh
+
