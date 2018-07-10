@@ -1,0 +1,248 @@
+1、格式
+grep [options] 'pattern' filename
+2、option主要参数
+--version or -V 查看grep版本
+-A 数字N 找到所有的匹配行，并显示匹配行后N行
+-B 数字N 找到所有的匹配行，并显示匹配行前N行
+-b 显示匹配到的字符在文件中的便宜地址
+-c 显示有多少行被匹配到
+--color 把匹配到的字符用颜色显示出来
+-e 可以使用多个正则表达式
+-f fileA fileB fileA在fileB中的匹配
+-i 不区分大小写针对单个字符
+-m 数字N 最多匹配到N个后停止
+-n 打印行号
+-o 只打印匹配的字符
+-R 搜索子目录
+-v 显示不包括查找字符的所有行
+
+2、实例
+[root@lvm data]# cat test.sh 
+
+bc
+def
+ght12
+abc999
+tydvl658
+123
+456
+789abc
+
+[root@lvm data]# grep --version或者grep -V
+grep (GNU grep) 2.20
+Copyright (C) 2014 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Mike Haertel and others, see <http://git.sv.gnu.org/cgit/grep.git/tree/AUTHORS>.
+[root@lvm data]# grep -A 2 'a' test.sh 
+abc999
+tydvl658
+123
+--
+789abc
+[root@lvm data]# grep 'a' -A 2 test.sh 
+abc999
+tydvl658
+123
+--
+789abc
+
+[root@lvm data]# grep 'a' -B 2 test.sh 
+def
+ght12
+abc999
+--
+123
+456
+789abc
+
+
+[root@lvm data]# grep -b 'a' test.sh 
+14:abc999
+38:789abc
+
+[root@lvm data]# grep -c 'a' test.sh 
+2
+
+[root@lvm data]# grep --color 'a' test.sh 
+abc999
+789abc
+
+[root@lvm data]# grep -e 'a' -e '1' test.sh 
+ght12
+abc999
+123
+789abc
+
+[root@lvm data]# grep -n -m 2 'a' test.sh 
+5:abc999
+9:789abc
+
+[root@lvm data]# grep -n -o 'a' test.sh 
+5:a
+9:a
+
+[root@lvm data]# grep -n  -v 'a' test.sh 
+1:
+2:bc
+3:def
+4:ght12
+6:tydvl658
+7:123
+8:456
+
+^ 行首 $行尾 [] or [n-n] 匹配[]内字符 . 匹配任意字符 * 0个或多个紧跟的字符
+\ 屏蔽与自负的特殊含义 \? 匹配前面的字符0次或1次 \+ 匹配前面的字符一次或多次
+X\{m\} m次 X\{m,\} 至少m次 X\{m,n\} m到n次 \| 或的关系
+
+[root@lvm data]# grep -n '^a' test.sh 
+5:abc999
+
+[root@lvm data]# grep -n '^abc' test.sh 
+5:abc999
+
+[root@lvm data]# grep -n '999$' test.sh 
+5:abc999
+
+[root@lvm data]# grep -n --color '[1]' test.sh 
+4:ght12
+7:123
+[root@lvm data]# grep -n --color '[1,a]' test.sh 
+4:ght12
+5:abc999
+7:123
+9:789abc
+
+[root@lvm data]# grep -n --color '[1-3 a-b]' test.sh 
+2:bc
+4:ght12
+5:abc999
+7:123
+9:789abc
+
+[root@lvm data]# grep -n --color '^.b' test.sh 
+5:abc999
+[root@lvm data]# grep -n --color '^..c' test.sh 
+5:abc999
+
+[root@lvm data]# grep -n --color 'b*' test.sh 
+1:
+2:bc
+3:def
+4:ght12
+5:abc999
+6:tydvl658
+7:123
+8:456
+9:789abc
+[root@lvm data]# grep -n --color 'ab*' test.sh 
+5:abc999
+9:789abc
+
+[root@lvm data]# grep -n --color '\.' test.sh 
+10:12345.6789
+
+[root@lvm data]# grep -n --color '3\?
+> ' test.sh
+1:
+2:bc
+3:def
+4:ght12
+5:abc999
+6:tydvl658
+7:123
+8:456
+9:789abc
+10:12345.6789
+
+[root@lvm data]# grep -n --color 'a\+' test.sh 
+5:abc999
+9:789abc
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
