@@ -1,0 +1,110 @@
+# awk学习记录
+
+[root@ansible2 data]# cat /etc/passwd |awk -F ':' '{print $1}'
+root
+bin
+daemon
+adm
+lp
+sync
+
+[root@ansible2 data]# cat /etc/passwd |awk -v FS=':' '{print $1,$2}'|awk -v OFS='+++' '{print $1,$2}'
+root+++x
+bin+++x
+daemon+++x
+adm+++x
+lp+++x
+sync+++x
+
+[root@ansible2 data]# cat /etc/passwd |awk -v FS=':' -v OFS='====' '{print $1,$2}'
+root====x
+bin====x
+daemon====x
+adm====x
+lp====x
+sync====x
+
+[root@ansible2 data]# cat /etc/passwd |awk -v FS=':'  '{print $1 $2}'
+rootx
+binx
+daemonx
+admx
+
+[root@ansible2 data]# awk '{print NR,$0}' test.ex
+1 #!/usr/bin/expect
+2 set timeout -1
+3 spawn ssh root@192.168.29.250
+4 expect {
+5     "password" {send "123456\r";}
+6     "yes/no" {send "yes\r";exp_continue}
+7 }
+8 expect "root" {send "mkdir /data/data\r"}
+9 expect "exit\r"
+10 expect eof
+11 exit
+
+[root@ansible2 data]# awk '{print FNR,$0}' test.exp test.ex
+1 #!/usr/bin/expect
+2 set timeout -1
+3 spawn ssh root@192.168.29.250
+4 expect {
+5     "password" {send "123456\r";}
+6     "yes/no" {send "yes\r";exp_continue}
+7 }
+8 expect "root" {send "mkdir /data/data\r"}
+9 expect "exit\r"
+10 expect eof
+11 exit
+1 #!/usr/bin/expect
+2 set timeout -1
+3 spawn ssh root@192.168.29.250
+4 expect {
+5     "password" {send "123456\r";}
+6     "yes/no" {send "yes\r";exp_continue}
+7 }
+8 expect "root" {send "mkdir /data/data\r"}
+9 expect "exit\r"
+10 expect eof
+11 exit
+[root@ansible2 data]# awk '{print NR,$0}' test.txt
+1 abcd 123456 789
+[root@ansible2 data]# awk -v RS=' ' '{print NR,$0}' test.txt
+1 abcd
+2 123456
+3 789
+
+[root@ansible2 data]# awk -v ORS='+++' '{print NR,$0}' test.txt
+1 abcd 123456 789+++[root@ansible2 data]#
+[root@ansible2 data]# awk '{print FILENAME,FNR,$0}' test.ex test.txt
+test.ex 1 #!/usr/bin/expect
+test.ex 2 set timeout -1
+test.ex 3 spawn ssh root@192.168.29.250
+test.ex 4 expect {
+test.ex 5     "password" {send "123456\r";}
+test.ex 6     "yes/no" {send "yes\r";exp_continue}
+test.ex 7 }
+test.ex 8 expect "root" {send "mkdir /data/data\r"}
+test.ex 9 expect "exit\r"
+test.ex 10 expect eof
+test.ex 11 exit
+test.txt 1 abcd 123456 789
+
+[root@ansible2 data]# awk 'BEGIN{print "aaa",ARGV[1],ARGV[2]}' test.txt test.ex
+aaa test.txt test.ex
+[root@ansible2 data]# awk 'BEGIN{print "aaa",ARGV[0],ARGV[1],ARGV[2]}' test.txt test.ex
+aaa awk test.txt test.ex
+[root@ansible2 data]#
+[root@ansible2 data]# awk 'BEGIN{print "aaa",ARGV[0],ARGV[1],ARGV[2],ARGC}' test.txt test.ex
+aaa awk test.txt test.ex 3
+[root@ansible2 data]#
+[root@ansible2 data]# test=111
+[root@ansible2 data]# awk -v my=$test 'BEGIN{print $my}'
+
+[root@ansible2 data]# awk -v my=$test 'BEGIN{print my}'
+111
+[root@ansible2 data]#
+[root@ansible2 data]# printf "%s\n" abd asdfadfa  adfadfa  asdfadsf
+abd
+asdfadfa
+adfadfa
+asdfadsf
