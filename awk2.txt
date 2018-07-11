@@ -1,0 +1,169 @@
+# awk的用法
+# awk 格式化
+[root@ansible2 data]# cat test.txt
+abcd 123456 789 aaa
+123 456 789 123
+[root@ansible2 data]# awk 'NF==5 {print $1}' test.txt
+[root@ansible2 data]# sed -i '/abcd/ s/$/ aaa/' test.txt
+[root@ansible2 data]# cat test.txt
+abcd 123456 789 aaa aaa
+123 456 789 123
+[root@ansible2 data]# awk 'NF==5 {print $1}' test.txt
+abcd
+[root@ansible2 data]# awk 'NF==5 {print $0}' test.txt
+abcd 123456 789 aaa aaa
+[root@ansible2 data]# awk '$4=="aaa" {print $0}' test.txt
+abcd 123456 789 aaa aaa
+[root@ansible2 data]#
+[root@ansible2 data]# cat /etc/passwd |grep '^m'
+mail:x:8:12:mail:/var/spool/mail:/sbin/nologin
+mysql:x:996:1000::/home/mysql:/bin/bash
+mailnull:x:47:47::/var/spool/mqueue:/sbin/nologin
+[root@ansible2 data]# awk '/^m/{print $0}' /etc/passwd
+mail:x:8:12:mail:/var/spool/mail:/sbin/nologin
+mysql:x:996:1000::/home/mysql:/bin/bash
+mailnull:x:47:47::/var/spool/mqueue:/sbin/nologin
+[root@ansible2 data]# awk -F ":" 'BEGIN{printf "%-5s%-5s\n","用户名","用户ID"} /^m/{printf "%-5s\t%-5s\n",$1,$3}' /etc/passwd
+用户名  用户ID
+mail    8
+mysql   996
+mailnull        47
+[root@ansible2 data]# awk -F ":" 'BEGIN{printf "%-10s%-10s\n","用户名","用户ID"} /^m/{printf "%-10s\t%-10s\n",$1,$3}' /etc/passwd
+用户名       用户ID
+mail            8
+mysql           996
+mailnull        47
+[root@ansible2 data]# awk '/\/bin\/bash$/{print $0}' /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+mysql:x:996:1000::/home/mysql:/bin/bash
+[root@ansible2 data]# cat test.txt
+hua
+huua
+huuua
+[root@ansible2 data]# awk --posix '/hu{2,3}a/{print $0}' test.txt
+huua
+huuua
+[root@ansible2 data]# awk --re-interval '/hu{2,3}a/{print $0}' test.txt
+huua
+huuua
+在使用到{m,n}的时候 需要加上--posix或者--re-interval
+[root@ansible2 data]# awk  '/Lee/,/Kevin/{print $0}' test.txt
+Green Lee
+William Aiden James Lee
+Angel Jack
+Tyler Kevin
+[root@ansible2 data]# awk 'NR>=3 && NR<=6{print $0}' test.txt
+William Aiden James Lee
+Angel Jack
+Tyler Kevin
+Lucas Thomas
+[root@ansible2 data]# awk 'NR>=3 && NR<=6 {print $0}' test.txt
+William Aiden James Lee
+Angel Jack
+Tyler Kevin
+Lucas Thomas
+[root@ansible2 data]# cat test.txt
+Allen Phillips
+Green Lee
+William Aiden James Lee
+Angel Jack
+Tyler Kevin
+Lucas Thomas
+Kevin
+test 192.168.1.1
+test1 192.168.2.3
+[root@ansible2 data]# awk --posix '$2~/192\.168\.[0-9]{1,3}\.[0-9]{1,3}/{print $0}' test.txt
+test 192.168.1.1
+test1 192.168.2.3
+[root@ansible2 data]# awk  '$1~/test/{print $0}' test.txt
+test 192.168.1.1
+test1 192.168.2.3
+[root@ansible2 data]# awk -F ":" '{if ($3<500) {printf "%-10s%-10s\n", $1,"系统用户"} else {printf "%-10s\t%-10s\n",$1,"普通用户"}}' /etc/passwd
+root      系统用户
+bin       系统用户
+daemon    系统用户
+adm       系统用户
+lp        系统用户
+sync      系统用户
+shutdown  系统用户
+halt      系统用户
+mail      系统用户
+operator  系统用户
+games     系统用户
+ftp       系统用户
+nobody    系统用户
+systemd-bus-proxy       普通用户
+systemd-network系统用户
+dbus      系统用户
+polkitd         普通用户
+tss       系统用户
+postfix   系统用户
+sshd      系统用户
+jenkins         普通用户
+mysql           普通用户
+apache    系统用户
+unbound         普通用户
+saslauth        普通用户
+mailnull  系统用户
+smmsp     系统用户
+zabbix          普通用户
+grafana         普通用户
+[root@ansible2 data]# awk 'BEGIN {for(i=1;i<=6;i++){print i}}'
+1
+2
+3
+4
+5
+6
+[root@ansible2 data]# awk 'BEGIN {for(i=1;i<=6;i++){if(i==3){break};print i}}'
+1
+2
+[root@ansible2 data]# awk 'BEGIN {for(i=1;i<=6;i++){if(i==3){continue};print i}}'
+1
+2
+4
+5
+6
+[root@ansible2 data]# cat test.txt
+192.168.1.12
+192.168.1.1
+192.168.1.1
+192.168.1.1
+192.168.1.2
+192.168.1.2
+192.168.1.2
+192.168.1.2
+192.168.1.5
+192.168.1.5
+192.168.1.5
+192.168.1.5
+192.168.1.5
+192.168.1.5
+192.168.1.5
+192.168.1.5
+192.168.1.5
+[root@ansible2 data]# awk '{count[$1]++} END{for (i in count){print i,count[i]}}' test.txt
+192.168.1.1 3
+192.168.1.12 1
+192.168.1.2 4
+192.168.1.5 9
+[root@ansible2 data]# awk 'BEGIN{print rand()}'
+0.237788
+[root@ansible2 data]# awk 'BEGIN{print rand()}'
+0.237788
+[root@ansible2 data]# awk 'BEGIN{print rand()}'
+0.237788
+[root@ansible2 data]# awk 'BEGIN{srand();print rand()}'
+0.741841
+[root@ansible2 data]# awk 'BEGIN{srand();print rand()}'
+0.69967
+[root@ansible2 data]# awk 'BEGIN{srand();print 100*rand()}'
+47.6869
+[root@ansible2 data]# awk 'BEGIN{srand();print int(100*rand())}'
+1
+[root@ansible2 data]# awk 'BEGIN{srand();print int(100*rand())}'
+58
+[root@ansible2 data]# awk 'BEGIN{srand();print int(100*rand())}'
+55
+[root@ansible2 data]#
+
