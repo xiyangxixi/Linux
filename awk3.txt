@@ -1,0 +1,31 @@
+# awk练习或可常用命令
+df -h
+df -h | awk '{print NR,$1}'
+df -h | awk 'NR>=1{print NR,$1}'
+df -h | awk 'NR>1{print NR,$1}'
+awk -F: '{print NF}' /etc/passwd
+awk -F: '{print $NF}' /etc/passwd
+awk -F: 'NF==4 {print }' /etc/passwd                       //显示只有4个字段的行
+awk -F: 'NF==4 {print }' /etc/passwd
+awk -F: 'NF>2{print $0}' /etc/passwd
+awk '{print NR,$0}' /etc/passwd
+awk -F: '{print NR,NF,$NF,"\t",$0}' /etc/passwd
+awk -F: 'NR==5{print}'  /etc/passwd
+awk -F: 'NR==5 || NR==6{print}'  /etc/passwd
+awk '/^m/{print $0}' /etc/passwd
+route -n|awk 'NR!=1{print}'
+route -n|awk 'NR!=1{print}'  > ./fs
+netstat -anp|awk '$6=="LISTEN" || NR==1 {printf "%-10s %-10s %-10s \n",$1,$2,$3}'
+awk -F: 'BEGIN{A=0;B=0} {if($3>100) {A++; print "large"} else {B++; print "small"}} END{print A,"\t",B}' /etc/passwd
+awk -F: 'BEGIN{i=1} {while(i<NF) print NF,$i,i++}' /etc/passwd
+netstat -anp|awk 'NR!=1{a[$6]++} END{for (i in a) print i,"\t",a[i]}'
+netstat -anp|awk 'NR!=1{a[$6]++} END{for (i in a) printf "%-20s %-10s %-5s \n", i,"\t",a[i]}'
+awk '{print $1,$2,$3}' FS=':' /etc/passwd
+cd /home/
+ll
+cd /data/
+ll
+ls -l|awk 'BEGIN{sum=0} !/^d/{sum+=$5} END{print "total size is:",sum/1024,"KB"}'
+ls -l|awk 'BEGIN{sum=0} !/^d/{sum+=$5} END{print "total size is:",sum/1024/1024/1024,"G"}'# 统计文件大小
+netstat -anp|awk '$6~/LISTEN|CONNECTED/{sum[$6]++} END{for (i in sum) printf "%-10s %-6s %-3s \n", i," ",sum[i]}'# 连接状态
+ls -l|awk 'NR!=1 && !/^d/{sum[$3]++} END{for (i in sum) printf "%-6s %-5s %-3s \n",i," ",sum[i]}'#用户有多少个文件
