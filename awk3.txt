@@ -1,4 +1,4 @@
-# awk练习或可常用命令
+# awk练习或可常用命令 参考：https://www.cnblogs.com/xudong-bupt/p/3721210.html
 df -h
 df -h | awk '{print NR,$1}'
 df -h | awk 'NR>=1{print NR,$1}'
