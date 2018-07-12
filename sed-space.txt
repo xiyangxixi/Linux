@@ -1,0 +1,36 @@
+# sed模式空间和保持空间 参考：http://blog.51cto.com/bluebox/1697917
+
+x	交换模式空间与保持空间内容
+d	删除当前模式空间内容，并进入下一个循环
+D	删除多行模式空间中的首行，并进入下一个循环
+n	读取匹配到的下一行至模式空间 [会覆盖模式空间原有的值]
+N	读取匹配到的下一行至模式空间 [追加到原有内容后]
+h	复制模式空间内容，到保持空间， 覆盖
+H	复制模式空间内容，到保持空间， 追加
+g	复制保持空间内容，到模式空间， 覆盖
+G	复制保持空间内容，到模式空间， 追加
+
+[root@ansible2 data]# cat sed.txt
+First
+Second
+three
+
+[root@ansible2 data]# tac sed.txt
+three
+Second
+First
+
+[root@ansible2 data]# cat sed.txt
+lance
+@mage.com
+yaozong
+@mage.com
+xiejun
+@mage.com
+mahuteng
+@qq.com
+[root@ansible2 data]# sed -n -e '/mage/!h' -e '/mage/{x;p}' sed.txt
+lance
+yaozong
+xiejun
+
