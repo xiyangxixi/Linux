@@ -1,4 +1,4 @@
-# sed模式空间和保持空间 参考：http://blog.51cto.com/bluebox/1697917
+# sed模式空间和保持空间 参考：http://blog.51cto.com/bluebox/1697917和http://blog.51cto.com/liuzhengwei521/1883236
 
 x	交换模式空间与保持空间内容
 d	删除当前模式空间内容，并进入下一个循环
@@ -34,3 +34,18 @@ lance
 yaozong
 xiejun
 
+ #sed -n ‘n;p’ test.txt(输出偶数行)
+
+  #sed ‘n;d’ test.txt(只显示奇数行)
+
+       #sed ‘$!d’ test.txt(最出文件最后一行)
+
+  #sed ‘G’ test.txt(在每一行下面加一个空白行)
+
+  #sed ‘/^$/d;G’ test.txt(每行间只保留一个空白行)
+
+  #sed '1!G;h;$!d' test.txt(逆行显示文件内容)
+
+  #sed ‘$!N;$!D’ test.txt(读文件的后2行)
+
+  #sed -n ‘1!G;h;$p’ test.txt(逆行显示文件内容)
