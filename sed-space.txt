@@ -1,4 +1,5 @@
-# sed模式空间和保持空间 参考：http://blog.51cto.com/bluebox/1697917和http://blog.51cto.com/liuzhengwei521/1883236
+# sed模式空间和保持空间 参考：http://blog.51cto.com/bluebox/1697917和http://blog.51cto.com/liuzhengwei521/1883236 
+# http://blog.chinaunix.net/uid-26528029-id-4434991.html
 
 x	交换模式空间与保持空间内容
 d	删除当前模式空间内容，并进入下一个循环
