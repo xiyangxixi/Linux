@@ -1,7 +1,6 @@
 #!/bin/bash
  
-# Tetris Game
-# 10.21.2003 xhchen<[email]xhchen@winbond.com.tw[/email]>
+
  
 #APP declaration
 APP_NAME="${0##*[\\/]}"
