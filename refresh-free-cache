@@ -1,0 +1,3 @@
+# 通过free -m 查看 可以用内存比较少，cache占据了较大内存，因此需要清理cache，在清理之前最好先rsync一下，确保缓存中的数据写入到磁盘。
+1、rsync
+2、echo 3 > /proc/sys/vm/drop_caches即可
